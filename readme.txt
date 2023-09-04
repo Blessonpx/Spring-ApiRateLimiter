@@ -1,0 +1,1 @@
+This is a simple test to see the rate limit funtionality of Springboot API based on Maven
