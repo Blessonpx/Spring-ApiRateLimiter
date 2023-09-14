@@ -2,7 +2,9 @@ package com.bpx.ApiRateLimiter.Controller;
 
 import java.time.Duration;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.bucket4j.Bandwidth;
@@ -27,6 +29,14 @@ public class ApiController {
 		if (bucket.tryConsume(1)) {
         return "Resource Data";
 		}
-		return "TOO Many Requests, please try again";
+		throw new TooManyRequestsException();
+		//return "TOO Many Requests, please try again";
+    }
+	
+	@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public static class TooManyRequestsException extends RuntimeException {
+        public TooManyRequestsException() {
+            super("TOO Many Requests, please try again");
+        }
     }
 } 
